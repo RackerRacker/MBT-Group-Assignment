@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileTech_Group_Assignment">
         <activity
-            android:name=".ItemViewActivity"
+            android:name=".Activity7"
             android:exported="false" />
         <activity
-            android:name=".EditItemActivity"
+            android:name=".Activity5"
             android:exported="false" />
         <activity
-            android:name=".GetImageActivity"
+            android:name=".Activity2"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity1"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
