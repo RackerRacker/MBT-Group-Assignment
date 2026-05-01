@@ -1,4 +1,4 @@
-package com.example.mobiletechapp;
+package com.example.mobiletech_group_assignment;
 
 import android.content.ContentValues;
 import android.content.Intent;
