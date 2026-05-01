@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "982977252043",
+    "project_id": "mt-tech-group",
+    "storage_bucket": "mt-tech-group.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982977252043:android:08b13d4af2ce1d4066694e",
+        "android_client_info": {
+          "package_name": "com.example.mobiletech_group_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrUxkaSkJ2L33TXt3sm7xaeCSfSpDI9d0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -36,11 +37,17 @@ android {
 }
 
 dependencies {
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.mlkit:image-labeling:17.0.9")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
