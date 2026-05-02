@@ -1,6 +1,7 @@
 package com.example.mobiletech_group_assignment;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,5 +25,10 @@ public class Activity1 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Button activity2Button = findViewById(R.id.imageView);
+
+
     }
+
 }
