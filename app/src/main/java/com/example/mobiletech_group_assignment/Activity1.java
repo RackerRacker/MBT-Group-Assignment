@@ -30,11 +30,46 @@ public class Activity1 extends AppCompatActivity {
         });
 
         ImageView image = findViewById(R.id.imageBar);
-
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int imageTwoId = R.drawable.barcode;
                 Intent intent = new Intent(Activity1.this, Activity2.class);
+                intent.putExtra("image_key", imageTwoId);
+                intent.putExtra("mode", "BARCODE");
+                startActivity(intent);
+            }
+        });
+
+        ImageView image2 = findViewById(R.id.imageCon);
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int imageTwoId = R.drawable.content;
+                Intent intent = new Intent(Activity1.this, Activity2.class);
+                intent.putExtra("image_key", imageTwoId);
+                intent.putExtra("mode", "CONTENT");
+                startActivity(intent);
+            }
+        });
+
+        ImageView image3 = findViewById(R.id.imageTex);
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int imageTwoId = R.drawable.text;
+                Intent intent = new Intent(Activity1.this, Activity2.class);
+                intent.putExtra("image_key", imageTwoId);
+                intent.putExtra("mode", "TEXT");
+                startActivity(intent);
+            }
+        });
+
+        Button button = findViewById(R.id.button7);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity1.this, Activity7.class);
                 startActivity(intent);
             }
         });

@@ -8,7 +8,7 @@
     tools:context=".Activity2">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -71,5 +71,16 @@
         android:text="Load Image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonCamera"
+        app:layout_constraintTop_toBottomOf="@+id/imageTwo" />
+
+    <Button
+        android:id="@+id/buttonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Edit Text"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageTwo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

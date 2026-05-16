@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/barcode" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageCon"
         android:layout_width="0dp"
         android:layout_height="130dp"
         android:layout_marginStart="80dp"
@@ -31,7 +31,7 @@
         app:srcCompat="@drawable/content" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageTex"
         android:layout_width="0dp"
         android:layout_height="130dp"
         android:layout_marginStart="80dp"
@@ -81,7 +81,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageCon" />
 
     <TextView
         android:id="@+id/textView4"
@@ -109,5 +109,5 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageTex" />
 </androidx.constraintlayout.widget.ConstraintLayout>
