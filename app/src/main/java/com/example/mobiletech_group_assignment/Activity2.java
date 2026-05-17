@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,16 +33,27 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.label.ImageLabel;
+import com.google.mlkit.vision.label.ImageLabeler;
+import com.google.mlkit.vision.label.ImageLabeling;
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.io.IOException;
 import java.util.List;
+
+
 
 public class Activity2 extends AppCompatActivity {
     private static final int REQUEST_PERMISSION = 3000;
     private Uri imageFileUri;
     private ImageView imageView;
     private TextView textViewOutput;
-
+    private String scanMode = "BARCODE";
+    private Button buttonEdit;
+    private TextView textTitle;
     public void openCamera(View view) {
         if (checkPermission() == false)
             return;
@@ -70,8 +82,48 @@ public class Activity2 extends AppCompatActivity {
 
 
         });
+
+        Button button = findViewById(R.id.buttonEdit);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity2.this, Activity5.class);
+                intent.putExtra("message", "Hello World!");
+                startActivity(intent);
+            }
+        });
         imageView = findViewById(R.id.imageTwo);
         textViewOutput = findViewById(R.id.textTwo);
+
+        int receivedImageId = getIntent().getIntExtra("image_key", 0);
+
+        if (receivedImageId != 0) {
+            imageView.setImageResource(receivedImageId);
+        }
+        textTitle = findViewById(R.id.textTitle);
+        buttonEdit = findViewById(R.id.buttonEdit);
+        buttonEdit.setVisibility(View.GONE);
+        scanMode = getIntent().getStringExtra("mode");
+
+        if (scanMode == null) {
+            scanMode = "BARCODE";
+        }
+        switch (scanMode) {
+
+            case "CONTENT":
+                textTitle.setText("Content Scanner");
+
+                break;
+            case "TEXT":
+                textTitle.setText("Text Scanner");
+
+                break;
+
+            default:
+                textTitle.setText("Barcode Scanner");
+
+                break;
+        }
     }
 
     private boolean checkPermission() {
@@ -104,7 +156,23 @@ public class Activity2 extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 if (image != null) {
-                                    processImageFromBarcodeReader(image);
+                                    switch (scanMode) {
+
+                                        case "CONTENT":
+                                            processImageFromContent(image);
+                                            buttonEdit.setVisibility(View.VISIBLE);
+                                            break;
+
+                                        case "TEXT":
+                                            processImageFromText(image);
+                                            buttonEdit.setVisibility(View.VISIBLE);
+                                            break;
+
+                                        default:
+                                            processImageFromBarcodeReader(image);
+                                            buttonEdit.setVisibility(View.VISIBLE);
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -136,5 +204,29 @@ public class Activity2 extends AppCompatActivity {
                         textViewOutput.setText("Failed");
                     }
                 });
+    }
+
+    public void processImageFromContent(InputImage image) {
+        ImageLabeler labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
+
+        labeler.process(image)
+                .addOnSuccessListener(labels -> {
+                    textViewOutput.setText("Detected objects:\n");
+                    for (ImageLabel label : labels) {
+                        textViewOutput.append(label.getText() + " - " + label.getConfidence() + "\n");
+                    }
+                })
+                .addOnFailureListener(e -> textViewOutput.setText("Failed"));
+    }
+
+    public void processImageFromText(InputImage image) {
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+
+        recognizer.process(image)
+                .addOnSuccessListener(result -> {
+                    textViewOutput.setText("Detected text:\n");
+                    textViewOutput.append(result.getText());
+                })
+                .addOnFailureListener(e -> textViewOutput.setText("Failed"));
     }
 }
