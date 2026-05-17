@@ -3,6 +3,7 @@ package com.example.mobiletech_group_assignment;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +44,7 @@ public class Activity5 extends AppCompatActivity {
 
     String reader = "No reader available";
     String result = "No result available";
+    String existingFilename = null;
     Uri imageFileUri;
     Uri uri = Uri.EMPTY;
 
@@ -58,19 +61,25 @@ public class Activity5 extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            reader = extras.getString("reader");
-            result = extras.getString("result");
+            String result = extras.getString("result");
+            String readerExtra = extras.getString("reader");
+            existingFilename = extras.getString("filename");
 
             EditText textMlItem = (EditText) findViewById(R.id.textMLItem);
             textMlItem.setText(result);
 
+            TextView editItemName = (TextView) findViewById(R.id.editItemName);
+            if (readerExtra != null) {
+                editItemName.setText(readerExtra);
+            }
+
             String uriString = extras.getString("IMAGE_URI");
             if (uriString != null) {
-                Uri myUri = Uri.parse(uriString);
+                imageFileUri = Uri.parse(uriString);
 
                 // Display the image in an ImageView
                 ImageView imageView = findViewById(R.id.imageUpload);
-                imageView.setImageURI(myUri);
+                imageView.setImageURI(imageFileUri);
             }
         }
 
@@ -80,25 +89,54 @@ public class Activity5 extends AppCompatActivity {
         TextView editItemName = (TextView) findViewById(R.id.editItemName);
         EditText textMlItem = (EditText) findViewById(R.id.textMLItem);
 
-        // Get image from the current imageFileUri
-        Bitmap bitmap = getBitmapFromUri(imageFileUri);
-        // Create a unique filename from the current date time
-        String currentDateTime = LocalDateTime.now().toString();
-        String imageFilename = currentDateTime.replaceAll("\\D+", "");
-        saveImageToGallery(bitmap, imageFilename, Activity5.this);
+        if (imageFileUri == null) {
+            Toast.makeText(this, "No image to save", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String itemName = editItemName.getText().toString();
         String MLItem = textMlItem.getText().toString();
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference(imageFilename);
+        String firebaseKey;
+
+        if (existingFilename != null && !existingFilename.isEmpty()) {
+            // Updating an existing item
+            firebaseKey = existingFilename;
+        } else {
+            // Saving a new item
+            // Get image from the current imageFileUri
+            Bitmap bitmap = getBitmapFromUri(imageFileUri);
+            if (bitmap == null) {
+                Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Create a unique filename from the current date time
+            String currentDateTime = LocalDateTime.now().toString();
+            firebaseKey = currentDateTime.replaceAll("\\D+", "");
+            saveImageToGallery(bitmap, firebaseKey, Activity5.this);
+        }
+        
+        // Use firebaseKey as the key in Firebase
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference(firebaseKey);
 
         String childFilename = "filename";
         String childReader = "reader";
         String childResult = "text";
 
         // save values to database
-        dbref.child(childFilename).setValue(imageFilename);
+        dbref.child(childFilename).setValue(firebaseKey);
         dbref.child(childReader).setValue(itemName);
-        dbref.child(childResult).setValue(MLItem);
+        dbref.child(childResult).setValue(MLItem).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(Activity5.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                // Navigate to Activity 6
+                Intent intent = new Intent(Activity5.this, Activity6.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(Activity5.this, "Failed to save item", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private Bitmap getBitmapFromUri(Uri uri) {

@@ -65,11 +65,11 @@ public class Activity1 extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.button7);
+        Button button = findViewById(R.id.listItemsButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Activity1.this, Activity7.class);
+                Intent intent = new Intent(Activity1.this, Activity6.class);
                 startActivity(intent);
             }
         });

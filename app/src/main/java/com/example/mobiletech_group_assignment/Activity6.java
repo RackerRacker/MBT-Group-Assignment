@@ -74,7 +74,7 @@ public class Activity6 extends AppCompatActivity {
                     if (filename != null) {
                         try {
                             Uri imageUri = loadImageFromGallery(filename + ".png");
-                            mlKitResults.add(new MLKitResult(reader, imageUri, text));
+                            mlKitResults.add(new MLKitResult(reader, imageUri, text, filename));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -97,6 +97,7 @@ public class Activity6 extends AppCompatActivity {
                 intent.putExtra("reader", res.getReader());
                 intent.putExtra("uri", res.getImageUri() != null ? res.getImageUri().toString() : null);
                 intent.putExtra("text", res.getText());
+                intent.putExtra("filename", res.getFilename());
                 startActivity(intent);
             }
         });

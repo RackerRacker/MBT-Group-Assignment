@@ -1,5 +1,6 @@
 package com.example.mobiletech_group_assignment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Activity7 extends AppCompatActivity {
 
     private String filename;
+    private String reader;
+    private String text;
+    private String uriString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +45,16 @@ public class Activity7 extends AppCompatActivity {
         ImageView itemImage = findViewById(R.id.itemImage);
         TextView itemName = findViewById(R.id.itemName);
         Button cancelButton = findViewById(R.id.cancelButton);
+        Button editButton = findViewById(R.id.editButton);
+        Button deleteButton = findViewById(R.id.deleteButton);
 
         // Get data from intent passed from Activity 6
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String reader = extras.getString("reader");
-            String text = extras.getString("text");
-            String uri = extras.getString("uri");
-
+            reader = extras.getString("reader");
+            text = extras.getString("text");
+            uriString = extras.getString("uri");
+            filename = extras.getString("filename");
 
             if (reader != null) {
                 itemName.setText(reader);
@@ -58,23 +64,40 @@ public class Activity7 extends AppCompatActivity {
                 itemTextView.setText(text);
             }
 
-            if (uri != null) {
-                itemImage.setImageURI(Uri.parse(uri));
+            if (uriString != null) {
+                itemImage.setImageURI(Uri.parse(uriString));
             }
         }
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Return to the previous screen (Activity 6)
                 finish();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Activity7.this, Activity5.class);
+                intent.putExtra("reader", reader);
+                intent.putExtra("result", text);
+                intent.putExtra("IMAGE_URI", uriString);
+                intent.putExtra("filename", filename); // Pass filename to overwrite the existing record
+                startActivity(intent);
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem(view);
             }
         });
     }
 
     public void deleteItem(View view) {
         if (filename != null && !filename.isEmpty()) {
-            // Get reference to the specific item in Firebase using its unique filename/id
             DatabaseReference dbref = FirebaseDatabase.getInstance().getReference(filename);
             
             // Remove the value from Firebase

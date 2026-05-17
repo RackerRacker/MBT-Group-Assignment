@@ -6,12 +6,13 @@ public class MLKitResult {
     private String reader;
     private Uri imageUri;
     private String text;
+    private String filename;
 
-
-    public MLKitResult(String reader, Uri imageUri, String text) {
+    public MLKitResult(String reader, Uri imageUri, String text, String filename) {
         this.reader = reader;
         this.imageUri = imageUri;
         this.text = text;
+        this.filename = filename;
     }
 
     public String getReader() {
@@ -37,5 +38,12 @@ public class MLKitResult {
     public void setText(String text) {
         this.text = text;
     }
-}
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+}

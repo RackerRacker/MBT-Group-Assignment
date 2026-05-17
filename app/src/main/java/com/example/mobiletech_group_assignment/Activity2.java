@@ -88,7 +88,9 @@ public class Activity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity2.this, Activity5.class);
-                intent.putExtra("message", "Hello World!");
+                intent.putExtra("reader", textTitle.getText().toString());
+                intent.putExtra("result", textViewOutput.getText().toString());
+                intent.putExtra("IMAGE_URI", imageFileUri.toString());
                 startActivity(intent);
             }
         });
@@ -111,16 +113,16 @@ public class Activity2 extends AppCompatActivity {
         switch (scanMode) {
 
             case "CONTENT":
-                textTitle.setText("Content Scanner");
+                textTitle.setText("Content Reader");
 
                 break;
             case "TEXT":
-                textTitle.setText("Text Scanner");
+                textTitle.setText("Text Reader");
 
                 break;
 
             default:
-                textTitle.setText("Barcode Scanner");
+                textTitle.setText("Barcode Reader");
 
                 break;
         }
@@ -147,7 +149,6 @@ public class Activity2 extends AppCompatActivity {
                                         result.getData().getData() != null)
                                     imageFileUri = result.getData().getData();
                                 imageView.setImageURI(imageFileUri);
-// Add code for ML Kit below this line
                                 textViewOutput.setText("");
                                 InputImage image = null;
                                 try {
@@ -187,7 +188,7 @@ public class Activity2 extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                     @Override
                     public void onSuccess(List<Barcode> barcodes) {
-                        textViewOutput.append(Html.fromHtml("<font color='navy'><b>Detected barcode:</b></font><br>", Html.FROM_HTML_MODE_LEGACY));
+                        textViewOutput.append(Html.fromHtml("<font color='black'><b>Detected barcode:</b></font><br> \n", Html.FROM_HTML_MODE_LEGACY));
                         String result = "";
                         for (Barcode barcode : barcodes) {
                             result = barcode.getRawValue();
@@ -211,7 +212,7 @@ public class Activity2 extends AppCompatActivity {
 
         labeler.process(image)
                 .addOnSuccessListener(labels -> {
-                    textViewOutput.setText("Detected objects:\n");
+                    textViewOutput.append(Html.fromHtml("<font color='black'><b>Recognised image content:</b></font><br> \n", Html.FROM_HTML_MODE_LEGACY));
                     for (ImageLabel label : labels) {
                         textViewOutput.append(label.getText() + " - " + label.getConfidence() + "\n");
                     }
@@ -224,7 +225,7 @@ public class Activity2 extends AppCompatActivity {
 
         recognizer.process(image)
                 .addOnSuccessListener(result -> {
-                    textViewOutput.setText("Detected text:\n");
+                    textViewOutput.append(Html.fromHtml("<font color='black'><b>Extracted text:</b></font><br>\n", Html.FROM_HTML_MODE_LEGACY));
                     textViewOutput.append(result.getText());
                 })
                 .addOnFailureListener(e -> textViewOutput.setText("Failed"));
