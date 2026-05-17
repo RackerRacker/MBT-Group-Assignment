@@ -8,10 +8,10 @@
     tools:context=".Activity7">
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/itemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="List of Analysed Images"
+        android:text="Item Name"
         android:textColor="#3F51B5"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -25,11 +25,12 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="34dp"
+        android:onClick="deleteItem"
         android:text="Delete"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/cancelButton"
         app:layout_constraintStart_toEndOf="@+id/editButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageUpload2" />
+        app:layout_constraintTop_toBottomOf="@+id/itemImage" />
 
     <Button
         android:id="@+id/editButton"
@@ -52,7 +53,7 @@
         tools:layout_editor_absoluteY="586dp" />
 
     <ImageView
-        android:id="@+id/imageUpload2"
+        android:id="@+id/itemImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -61,16 +62,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/itemTextView"
         app:srcCompat="@drawable/barcode" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/itemTextView"
         android:layout_width="363dp"
         android:layout_height="155dp"
         android:layout_marginTop="15dp"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        android:text="Item Description"
+        app:layout_constraintTop_toBottomOf="@+id/itemName"
         tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

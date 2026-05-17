@@ -95,6 +95,7 @@ public class Activity5 extends AppCompatActivity {
         String childReader = "reader";
         String childResult = "text";
 
+        // save values to database
         dbref.child(childFilename).setValue(imageFilename);
         dbref.child(childReader).setValue(itemName);
         dbref.child(childResult).setValue(MLItem);

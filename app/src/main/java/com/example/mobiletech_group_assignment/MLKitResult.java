@@ -5,10 +5,13 @@ import android.net.Uri;
 public class MLKitResult {
     private String reader;
     private Uri imageUri;
+    private String text;
 
-    public MLKitResult(String reader, Uri imageUri) {
+
+    public MLKitResult(String reader, Uri imageUri, String text) {
         this.reader = reader;
         this.imageUri = imageUri;
+        this.text = text;
     }
 
     public String getReader() {
@@ -23,8 +26,16 @@ public class MLKitResult {
         return imageUri;
     }
 
-    public void setImage(Uri imageUri) {
+    public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
 
